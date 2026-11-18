@@ -39,6 +39,10 @@ import com.open.spring.mvc.comment.Comment;
 import com.open.spring.mvc.comment.CommentJPA;
 import com.open.spring.mvc.groups.CourseGroupProperties;
 import com.open.spring.mvc.groups.Groups;
+import com.open.spring.mvc.fortuneFinders.FortuneChoice;
+import com.open.spring.mvc.fortuneFinders.FortuneChoiceRepository;
+import com.open.spring.mvc.fortuneFinders.FortuneQuestion;
+import com.open.spring.mvc.fortuneFinders.FortuneQuestionRepository;
 import com.open.spring.mvc.groups.GroupsJpaRepository;
 import com.open.spring.mvc.hardAssets.HardAssetsRepository;
 import com.open.spring.mvc.jokes.Jokes;
@@ -104,6 +108,8 @@ public class ModelInit {
     @Autowired GroupsJpaRepository groupsJpaRepository;
     @Autowired CourseGroupProperties courseGroupProperties;
     @Autowired QuizScoreRepository quizScoreRepository;
+    @Autowired FortuneQuestionRepository fortuneQuestionRepository;
+    @Autowired FortuneChoiceRepository fortuneChoiceRepository;
     @Autowired ResumeJpaRepository resumeJpaRepository;
     @Autowired StatsRepository statsRepository; // curators - stats
     @Autowired KitFeatures kitFeatures; // kit feature gating: which sample data to seed
@@ -255,6 +261,7 @@ public class ModelInit {
             new Seed(SynergyGrade.class, gradeJpaRepository::count, this::seedSynergyGrades),
             new Seed(Score.class, mediaJpaRepository::count, this::seedMediaScores),
             new Seed(QuizScore.class, quizScoreRepository::count, this::seedQuizScores),
+            new Seed(FortuneQuestion.class, fortuneQuestionRepository::count, this::seedFortuneQuestions),
             new Seed(Resume.class, resumeJpaRepository::count, this::seedResumes),
             new Seed(Stats.class, statsRepository::count, this::seedStats),
             new Seed(Game.class, gameJpaRepository::count, this::seedGames));
@@ -400,6 +407,18 @@ public class ModelInit {
             if (existingPlayers.isEmpty()) {
                 mediaJpaRepository.save(score);
             }
+        }
+    }
+
+    // Fortune Finders quiz questions and their choices
+    private void seedFortuneQuestions() {
+        List<FortuneQuestion> questions = new java.util.ArrayList<>();
+        for (String[] row : FortuneQuestion.init()) {
+            questions.add(fortuneQuestionRepository.save(new FortuneQuestion(row[0], row[1], row[2], Integer.parseInt(row[3]))));
+        }
+        for (String[] row : FortuneChoice.init()) {
+            FortuneQuestion question = questions.get(Integer.parseInt(row[0]) - 1);
+            fortuneChoiceRepository.save(new FortuneChoice(question, row[1], Boolean.parseBoolean(row[2])));
         }
     }
 

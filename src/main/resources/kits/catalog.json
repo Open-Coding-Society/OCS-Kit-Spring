@@ -434,8 +434,8 @@
         "verify": "Open the finance pages and make a simulated trade."
       },
       "spring": {
-        "packages": ["mvc.bank", "mvc.crypto", "mvc.cryptoMining", "mvc.userStocks", "mvc.stocksFetch", "mvc.poker", "mvc.blackjack", "mvc.dice", "mvc.mines", "mvc.hardAssets"],
-        "paths": ["/bank", "/mvc/bank", "/api/crypto", "/api/rankings", "/api/mining", "/stocks/table", "/api/stocks", "/api/casino", "/blackjack", "/api/assets"]
+        "packages": ["mvc.bank", "mvc.crypto", "mvc.cryptoMining", "mvc.userStocks", "mvc.stocksFetch", "mvc.poker", "mvc.blackjack", "mvc.dice", "mvc.mines", "mvc.hardAssets", "mvc.fortuneFinders"],
+        "paths": ["/bank", "/mvc/bank", "/api/crypto", "/api/rankings", "/api/mining", "/stocks/table", "/api/stocks", "/api/casino", "/blackjack", "/api/assets", "/api/rpg_answer"]
       }
     },
     "resume": {
